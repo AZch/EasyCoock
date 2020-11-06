@@ -1,13 +1,13 @@
-package com.wordscreators.easycoock;
+package com.wordscreators.easyCook;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class EasycoockApplication {
+public class EasyCookApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(EasycoockApplication.class, args);
+        SpringApplication.run(EasyCookApplication.class, args);
     }
 
 }

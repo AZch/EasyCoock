@@ -1,4 +1,4 @@
-package com.wordscreators.easycoock.recipe.model;
+package com.wordscreators.easyCook.recipe.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,7 +8,7 @@ import lombok.Data;
 @AllArgsConstructor
 @Builder
 public class Stage {
-    private int id;
+    private Long id;
     private int capacity;
     private ValueType valueType;
     private float valueCount;

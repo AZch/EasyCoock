@@ -1,4 +1,4 @@
-package com.wordscreators.easycoock.recipe.model;
+package com.wordscreators.easyCook.recipe.model;
 
 public enum ValueType {
     LITER,

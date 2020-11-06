@@ -1,4 +1,4 @@
-package com.wordscreators.easycoock.recipe.model;
+package com.wordscreators.easyCook.recipe.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class Ingredients {
-    private int id;
+    private Long id;
     private String name;
 
     private ValueType valueCount;
