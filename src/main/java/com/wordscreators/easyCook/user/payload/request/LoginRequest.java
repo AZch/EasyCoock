@@ -2,11 +2,16 @@ package com.wordscreators.easyCook.user.payload.request;
 
 import lombok.Data;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
 @Data
 public class LoginRequest {
-    // set validate email and not null
+
+    @NotBlank
+    @Email
     private String email;
 
-    // set validate not null
+    @NotBlank
     private String password;
 }
