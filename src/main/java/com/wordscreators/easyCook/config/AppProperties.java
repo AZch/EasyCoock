@@ -1,4 +1,4 @@
-package com.wordscreators.easyCook.common.config;
+package com.wordscreators.easyCook.config;
 
 import lombok.Data;
 import lombok.Getter;

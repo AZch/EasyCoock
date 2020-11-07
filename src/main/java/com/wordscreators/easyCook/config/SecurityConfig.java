@@ -1,4 +1,4 @@
-package com.wordscreators.easyCook.common.config;
+package com.wordscreators.easyCook.config;
 
 import com.wordscreators.easyCook.user.security.CustomUserDetailsService;
 import com.wordscreators.easyCook.user.security.RestAuthenticationEntryPoint;
@@ -8,6 +8,7 @@ import com.wordscreators.easyCook.user.security.oauth2.HttpCookieOAuth2Authoriza
 import com.wordscreators.easyCook.user.security.oauth2.OAuth2AuthenticationFailureHandler;
 import com.wordscreators.easyCook.user.security.oauth2.OAuth2AuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
+@EnableConfigurationProperties(AppProperties.class)
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
         securedEnabled = true,
@@ -113,6 +115,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .successHandler(oAuth2AuthenticationSuccessHandler)
                     .failureHandler(oAuth2AuthenticationFailureHandler);
 
+        // Add our custom Token based authentication filter
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 

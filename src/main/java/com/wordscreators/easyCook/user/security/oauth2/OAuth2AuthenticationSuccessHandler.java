@@ -1,6 +1,6 @@
 package com.wordscreators.easyCook.user.security.oauth2;
 
-import com.wordscreators.easyCook.common.config.AppProperties;
+import com.wordscreators.easyCook.config.AppProperties;
 import com.wordscreators.easyCook.common.exception.BadRequestException;
 import com.wordscreators.easyCook.user.security.TokenProvider;
 import com.wordscreators.easyCook.user.utils.CookieUtils;
@@ -33,7 +33,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         String targetUrl = determineTargetUrl(request, response, authentication);
 
         if (response.isCommitted()) {

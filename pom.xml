@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.wordscreators</groupId>
-    <artifactId>easycoock</artifactId>
+    <artifactId>easyCoock</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>easyCook</name>
     <description>Easy cook from all what you have</description>

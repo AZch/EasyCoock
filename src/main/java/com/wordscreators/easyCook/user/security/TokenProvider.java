@@ -1,6 +1,6 @@
 package com.wordscreators.easyCook.user.security;
 
-import com.wordscreators.easyCook.common.config.AppProperties;
+import com.wordscreators.easyCook.config.AppProperties;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;

@@ -3,7 +3,7 @@ package com.wordscreators.easyCook;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import com.wordscreators.easyCook.common.config.AppProperties;
+import com.wordscreators.easyCook.config.AppProperties;
 
 @SpringBootApplication
 @EnableConfigurationProperties(AppProperties.class)
