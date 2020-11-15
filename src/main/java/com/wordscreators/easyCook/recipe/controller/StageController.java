@@ -1,7 +1,5 @@
 package com.wordscreators.easyCook.recipe.controller;
 
-import com.wordscreators.easyCook.recipe.assembler.recipe.RecipeCollectionModelAssembler;
-import com.wordscreators.easyCook.recipe.assembler.recipe.RecipeModelAssembler;
 import com.wordscreators.easyCook.recipe.assembler.stage.StageCollectionModelAssembler;
 import com.wordscreators.easyCook.recipe.assembler.stage.StageModelAssembler;
 import com.wordscreators.easyCook.recipe.exception.EntityNotFoundException;
