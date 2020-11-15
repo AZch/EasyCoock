@@ -6,27 +6,23 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
-import java.util.Set;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "stage")
-public class Stage {
+public class StageIngredients {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String description;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private Stage stage;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(nullable = false)
-    private Recipe recipe;
+    private Ingredient ingredient;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private Set<StageIngredients> stageIngredients;
+    private float valueCount;
 }
