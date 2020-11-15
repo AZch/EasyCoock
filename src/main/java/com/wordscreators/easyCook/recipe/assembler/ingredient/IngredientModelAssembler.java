@@ -1,4 +1,4 @@
-package com.wordscreators.easyCook.recipe.assembler;
+package com.wordscreators.easyCook.recipe.assembler.ingredient;
 
 import com.wordscreators.easyCook.recipe.controller.IngredientController;
 import com.wordscreators.easyCook.recipe.model.Ingredient;

@@ -1,7 +1,7 @@
 package com.wordscreators.easyCook.recipe.controller;
 
-import com.wordscreators.easyCook.recipe.assembler.IngredientCollectionModelAssembler;
-import com.wordscreators.easyCook.recipe.assembler.IngredientModelAssembler;
+import com.wordscreators.easyCook.recipe.assembler.ingredient.IngredientCollectionModelAssembler;
+import com.wordscreators.easyCook.recipe.assembler.ingredient.IngredientModelAssembler;
 import com.wordscreators.easyCook.recipe.exception.EntityNotFoundException;
 import com.wordscreators.easyCook.recipe.model.Ingredient;
 import com.wordscreators.easyCook.recipe.repository.IngredientRepository;
@@ -25,24 +25,24 @@ public class IngredientController {
 
     private final IngredientRepository ingredientRepository;
 
-    private final IngredientModelAssembler ingredientModelAssembler;
-    private final IngredientCollectionModelAssembler ingredientCollectionModelAssembler;
+    private final IngredientModelAssembler assembler;
+    private final IngredientCollectionModelAssembler collectionAssembler;
 
     @GetMapping
     public CollectionModel<EntityModel<Ingredient>> all() {
         List<EntityModel<Ingredient>> ingredients = ingredientRepository.findIngredientsByIsDeleted(false)
                 .stream()
-                .map(ingredientModelAssembler::toModel)
+                .map(assembler::toModel)
                 .collect(Collectors.toList());
 
-        return ingredientCollectionModelAssembler.toModel(ingredients);
+        return collectionAssembler.toModel(ingredients);
     }
 
     @GetMapping("/{id}")
     public EntityModel<Ingredient> one(@PathVariable Long id) {
         Ingredient ingredient = ingredientRepository.findIngredientByIdAndIsDeleted(id, false)
-                .orElseThrow(() -> new EntityNotFoundException("Ingredient", "id", id));
-        return ingredientModelAssembler.toModel(ingredient);
+                .orElseThrow(() -> ingredientNotFoundById(id));
+        return assembler.toModel(ingredient);
     }
 
     @PostMapping
@@ -51,9 +51,8 @@ public class IngredientController {
 
         return ResponseEntity.created(
                 linkTo(
-                        methodOn(IngredientController.class).one(newIngredient.getId()))
-                        .toUri())
-                .body(ingredientModelAssembler.toModel(ingredient));
+                        methodOn(IngredientController.class).one(newIngredient.getId())).toUri())
+                .body(assembler.toModel(ingredient));
     }
 
     @PutMapping("/{id}")
@@ -68,9 +67,9 @@ public class IngredientController {
             ingredient.setValueCount(newIngredient.getValueCount());
             ingredient.setValueSize(newIngredient.getValueSize());
             return ingredientRepository.save(ingredient);
-        }).orElseThrow(() -> new EntityNotFoundException("Ingredient", "id", id));
+        }).orElseThrow(() -> ingredientNotFoundById(id));
 
-        EntityModel<Ingredient> entityModel = ingredientModelAssembler.toModel(updatedIngredient);
+        EntityModel<Ingredient> entityModel = assembler.toModel(updatedIngredient);
 
         return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
@@ -79,11 +78,17 @@ public class IngredientController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteIngredient(@PathVariable Long id) {
-        Ingredient ingredient = ingredientRepository.findIngredientByIdAndIsDeleted(id, false)
-                .orElseThrow(() -> new EntityNotFoundException("Ingredient", "id", id));
-        ingredient.setDeleted(true);
-        ingredientRepository.save(ingredient);
+        ingredientRepository.findIngredientByIdAndIsDeleted(id, false)
+                .map(ingredient -> {
+                    ingredient.setDeleted(true);
+                    return ingredientRepository.save(ingredient);
+                })
+                .orElseThrow(() -> ingredientNotFoundById(id));
 
         return ResponseEntity.noContent().build();
+    }
+
+    private RuntimeException ingredientNotFoundById(Long id) {
+        return new EntityNotFoundException("Ingredient", "id", id);
     }
 }

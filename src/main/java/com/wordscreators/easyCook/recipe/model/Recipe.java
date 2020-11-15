@@ -24,6 +24,8 @@ public class Recipe {
     @Column(nullable = false)
     private String name;
 
+    private boolean isDeleted = false;
+
     @OneToMany(fetch = FetchType.LAZY)
     private Set<Stage> preparationStages;
 }
