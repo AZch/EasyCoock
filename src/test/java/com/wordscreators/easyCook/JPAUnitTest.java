@@ -1,30 +1,26 @@
 package com.wordscreators.easyCook;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.wordscreators.easyCook.recipe.model.*;
 import com.wordscreators.easyCook.recipe.repository.IngredientRepository;
 import com.wordscreators.easyCook.recipe.repository.RecipeRepository;
-import com.wordscreators.easyCook.recipe.repository.StageRepository;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@RunWith(SpringRunner.class)
+import static org.assertj.core.api.Assertions.assertThat;
+
 @DataJpaTest
 public class JPAUnitTest {
+
     @Autowired
     private RecipeRepository recipeRepository;
+
     @Autowired
     private IngredientRepository ingredientRepository;
-    @Autowired
-    private StageRepository stageRepository;
 
     @Test
     public void shouldFindNoRecipesIfRepositoryIsEmptyTest() {
