@@ -19,7 +19,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping("/ingredients")
+@RequestMapping("/ingredient")
 @RequiredArgsConstructor
 public class IngredientController {
 
@@ -28,9 +28,9 @@ public class IngredientController {
     private final IngredientModelAssembler ingredientModelAssembler;
     private final IngredientCollectionModelAssembler ingredientCollectionModelAssembler;
 
-    @GetMapping("/")
+    @GetMapping
     public CollectionModel<EntityModel<Ingredient>> all() {
-        List<EntityModel<Ingredient>> ingredients = ingredientRepository.findAll()
+        List<EntityModel<Ingredient>> ingredients = ingredientRepository.findIngredientsByIsDeleted(false)
                 .stream()
                 .map(ingredientModelAssembler::toModel)
                 .collect(Collectors.toList());
@@ -40,12 +40,12 @@ public class IngredientController {
 
     @GetMapping("/{id}")
     public EntityModel<Ingredient> one(@PathVariable Long id) {
-        Ingredient ingredient = ingredientRepository.findById(id)
+        Ingredient ingredient = ingredientRepository.findIngredientByIdAndIsDeleted(id, false)
                 .orElseThrow(() -> new EntityNotFoundException("Ingredient", "id", id));
         return ingredientModelAssembler.toModel(ingredient);
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<EntityModel<Ingredient>> newIngredient(@RequestBody Ingredient ingredient) {
         Ingredient newIngredient = ingredientRepository.save(ingredient);
 
@@ -58,7 +58,7 @@ public class IngredientController {
 
     @PutMapping("/{id}")
     public ResponseEntity<EntityModel<Ingredient>> replaceIngredient(@RequestBody Ingredient newIngredient, @PathVariable Long id) {
-        Ingredient updatedIngredient = ingredientRepository.findById(id).map(ingredient -> {
+        Ingredient updatedIngredient = ingredientRepository.findIngredientByIdAndIsDeleted(id, false).map(ingredient -> {
             ingredient.setName(newIngredient.getName());
             ingredient.setCalories(newIngredient.getCalories());
             ingredient.setFat(newIngredient.getFat());
@@ -67,11 +67,8 @@ public class IngredientController {
             ingredient.setSugar(newIngredient.getSugar());
             ingredient.setValueCount(newIngredient.getValueCount());
             ingredient.setValueSize(newIngredient.getValueSize());
-            return ingredient;
-        }).orElseGet(() -> {
-            newIngredient.setId(id);
-            return ingredientRepository.save(newIngredient);
-        });
+            return ingredientRepository.save(ingredient);
+        }).orElseThrow(() -> new EntityNotFoundException("Ingredient", "id", id));
 
         EntityModel<Ingredient> entityModel = ingredientModelAssembler.toModel(updatedIngredient);
 
@@ -82,12 +79,10 @@ public class IngredientController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteIngredient(@PathVariable Long id) {
-        ingredientRepository.findById(id)
-                .map(ingredient -> {
-                    ingredient.setDeleted(true);
-                    return ingredient;
-                })
+        Ingredient ingredient = ingredientRepository.findIngredientByIdAndIsDeleted(id, false)
                 .orElseThrow(() -> new EntityNotFoundException("Ingredient", "id", id));
+        ingredient.setDeleted(true);
+        ingredientRepository.save(ingredient);
 
         return ResponseEntity.noContent().build();
     }
