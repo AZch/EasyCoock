@@ -82,8 +82,12 @@ public class IngredientController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteIngredient(@PathVariable Long id) {
-        ingredientRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Ingredient", "id", id));
-        ingredientRepository.deleteById(id);
+        ingredientRepository.findById(id)
+                .map(ingredient -> {
+                    ingredient.setDeleted(true);
+                    return ingredient;
+                })
+                .orElseThrow(() -> new EntityNotFoundException("Ingredient", "id", id));
 
         return ResponseEntity.noContent().build();
     }
