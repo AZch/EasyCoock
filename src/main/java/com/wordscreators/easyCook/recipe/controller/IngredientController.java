@@ -88,7 +88,7 @@ public class IngredientController {
         return ResponseEntity.noContent().build();
     }
 
-    private RuntimeException ingredientNotFoundById(Long id) {
+    public static RuntimeException ingredientNotFoundById(Long id) {
         return new EntityNotFoundException("Ingredient", "id", id);
     }
 }

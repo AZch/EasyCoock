@@ -81,7 +81,7 @@ public class RecipeController {
         return ResponseEntity.noContent().build();
     }
 
-    private RuntimeException recipeNotFoundById(Long id) {
+    public static RuntimeException recipeNotFoundById(Long id) {
         return new EntityNotFoundException("Recipe", "id", id);
     }
 }

@@ -5,7 +5,9 @@ import com.wordscreators.easyCook.recipe.assembler.recipe.RecipeModelAssembler;
 import com.wordscreators.easyCook.recipe.assembler.stage.StageCollectionModelAssembler;
 import com.wordscreators.easyCook.recipe.assembler.stage.StageModelAssembler;
 import com.wordscreators.easyCook.recipe.exception.EntityNotFoundException;
+import com.wordscreators.easyCook.recipe.model.Recipe;
 import com.wordscreators.easyCook.recipe.model.Stage;
+import com.wordscreators.easyCook.recipe.repository.RecipeRepository;
 import com.wordscreators.easyCook.recipe.repository.StageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
@@ -26,6 +28,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class StageController {
 
     private final StageRepository stageRepository;
+    private final RecipeRepository recipeRepository;
 
     private final StageModelAssembler assembler;
     private final StageCollectionModelAssembler collectionAssembler;
@@ -48,8 +51,11 @@ public class StageController {
         return assembler.toModel(stage);
     }
 
-    @PostMapping
-    public ResponseEntity<EntityModel<Stage>> newStage(@RequestBody Stage stage) {
+    @PostMapping("/byRecipe/{recipeId}")
+    public ResponseEntity<EntityModel<Stage>> newStage(@RequestBody Stage stage, @PathVariable Long recipeId) {
+        Recipe recipe = recipeRepository.findRecipeByIdAndIsDeleted(recipeId, false)
+                .orElseThrow(() -> RecipeController.recipeNotFoundById(recipeId));
+        stage.setRecipe(recipe);
         Stage newStage = stageRepository.save(stage);
 
         return ResponseEntity
@@ -85,7 +91,7 @@ public class StageController {
         return ResponseEntity.noContent().build();
     }
 
-    private RuntimeException stageNotFoundById(Long id) {
+    public static RuntimeException stageNotFoundById(Long id) {
         return new EntityNotFoundException("Stage", "id", id);
     }
 }
