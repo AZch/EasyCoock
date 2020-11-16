@@ -33,7 +33,8 @@ public class StageController {
 
     @GetMapping("/byRecipe/{id}")
     public CollectionModel<EntityModel<Stage>> stagesByRecipe(@PathVariable Long id) {
-        List<EntityModel<Stage>> stages = stageRepository.findStagesByRecipe_Id(id)
+        Recipe recipe = recipeRepository.findRecipeByIdAndIsDeleted(id, false).orElseThrow(() -> RecipeController.recipeNotFoundById(id));
+        List<EntityModel<Stage>> stages = stageRepository.findStagesByRecipeAndIsDeleted(recipe, false)
                 .stream()
                 .map(assembler::toModel)
                 .collect(Collectors.toList());
