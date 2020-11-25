@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
 public class JPAUnitTest {
@@ -30,7 +31,7 @@ public class JPAUnitTest {
     }
 
     @Test
-    public void createIngredientTest() {
+    public void shouldCreateIngredient() {
         Ingredient ingredient = Ingredient.builder()
                 .name("test ingredient")
                 .valueCount(ValueType.GRAM)
@@ -41,11 +42,19 @@ public class JPAUnitTest {
                 .salt(53)
                 .description("best ingredient of the best")
                 .build();
-        ingredientRepository.save(ingredient);
+        Ingredient saved = ingredientRepository.save(ingredient);
+        assertThat(saved).hasFieldOrPropertyWithValue("name", "test ingredient");
+        assertThat(saved).hasFieldOrPropertyWithValue("valueCount", ValueType.GRAM);
+        assertThat(saved).hasFieldOrPropertyWithValue("valueSize", 100);
+        assertThat(saved).hasFieldOrPropertyWithValue("calories", 50f);
+        assertThat(saved).hasFieldOrPropertyWithValue("sugar", 51f);
+        assertThat(saved).hasFieldOrPropertyWithValue("fat", 52f);
+        assertThat(saved).hasFieldOrPropertyWithValue("salt", 53f);
+        assertThat(saved).hasFieldOrPropertyWithValue("description", "best ingredient of the best");
     }
 
     @Test
-    void createRecipe() {
+    void shouldCreateRecipe() {
         Ingredient ingredient1 = Ingredient.builder()
                 .name("test ingredient 1")
                 .valueCount(ValueType.GRAM)
@@ -101,5 +110,6 @@ public class JPAUnitTest {
                 .build();
         recipeRepository.save(recipe);
         assertThat(recipe).hasFieldOrPropertyWithValue("name", "best recipes of the world");
+        assertEquals(recipe.getPreparationStages().size(), 2);
     }
 }
