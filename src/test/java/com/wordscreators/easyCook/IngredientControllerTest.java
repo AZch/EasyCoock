@@ -55,6 +55,7 @@ public class IngredientControllerTest {
                 .description("best ingredient 2 of the best")
                 .build();
         System.out.println(ingredientRepository);
+
         when(ingredientRepository.findIngredientsByIsDeleted(false)).thenReturn(Arrays.asList(ingredient1, ingredient2));
 
         this.mockMvc
