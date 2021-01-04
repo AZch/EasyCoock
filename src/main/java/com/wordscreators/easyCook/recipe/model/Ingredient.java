@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -32,6 +31,8 @@ public class Ingredient {
     private float sugar;
     private float fat;
     private float salt;
+
+    private boolean isDeleted = false;
 
     private String description;
 

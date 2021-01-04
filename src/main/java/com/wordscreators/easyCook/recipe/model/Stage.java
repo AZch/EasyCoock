@@ -23,6 +23,8 @@ public class Stage {
 
     private String description;
 
+    private boolean isDeleted = false;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(nullable = false)
     private Recipe recipe;
